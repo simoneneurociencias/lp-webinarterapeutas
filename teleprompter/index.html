@@ -237,7 +237,7 @@ Use três pontos... assim... para marcar as pausas curtas.
 
   // ---------- teclado ----------
   addEventListener('keydown', e=>{
-    if(palco.style.display==='none') return;
+    if(palco.style.display!=='block') return;
     if(e.key==='+'||e.key==='=') setFs(fs+2);
     if(e.key==='-') setFs(fs-2);
     if(e.code==='Space'){ e.preventDefault(); bRolar.click(); }
