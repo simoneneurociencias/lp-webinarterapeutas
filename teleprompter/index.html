@@ -62,6 +62,7 @@
   .ctrl:hover{color:var(--tinta); border-color:#3a3f4f}
   .ctrl.on{background:var(--ok); color:#04120e; border-color:transparent; font-weight:700}
   #cron{font-variant-numeric:tabular-nums; font-size:16px; color:var(--tinta-2); min-width:52px}
+  #vel{font-variant-numeric:tabular-nums; font-size:16px; color:var(--tinta-2); min-width:46px; text-align:center}
   #onde{color:var(--tinta-2); font-size:14px; flex:1; min-width:120px; text-align:right}
   .sep{width:1px; align-self:stretch; background:var(--linha)}
 
@@ -139,6 +140,7 @@ Use três pontos... assim... para marcar as pausas curtas.
     <button class="ctrl" id="bRolar">▶ rolar</button>
     <button class="ctrl" id="bLento">−</button>
     <button class="ctrl" id="bRapido">+</button>
+    <span id="vel">1.0x</span>
     <span id="onde"></span>
   </div>
   <div id="linha"></div>
@@ -219,8 +221,11 @@ Use três pontos... assim... para marcar as pausas curtas.
     if(rolando){ pararRolagem(); }
     else { bRolar.textContent='❚❚ rolar'; bRolar.classList.add('on'); linha.classList.add('on'); rolando=requestAnimationFrame(rolar); }
   };
-  $('#bRapido').onclick = ()=> vel = Math.min(6, vel+0.4);
-  $('#bLento').onclick  = ()=> vel = Math.max(0.4, vel-0.4);
+  const elVel=$('#vel');
+  function setVel(v){ vel = Math.min(6, Math.max(0.4, Math.round(v*10)/10)); elVel.textContent = vel.toFixed(1)+'x'; }
+  setVel(vel);
+  $('#bRapido').onclick = ()=> setVel(vel+0.4);
+  $('#bLento').onclick  = ()=> setVel(vel-0.4);
 
   // ---------- indicador "onde estou" (marcadores) ----------
   let io=null;
@@ -241,6 +246,8 @@ Use três pontos... assim... para marcar as pausas curtas.
     if(e.key==='+'||e.key==='=') setFs(fs+2);
     if(e.key==='-') setFs(fs-2);
     if(e.code==='Space'){ e.preventDefault(); bRolar.click(); }
+    if(e.key==='ArrowUp'){ e.preventDefault(); setVel(vel+0.4); }
+    if(e.key==='ArrowDown'){ e.preventDefault(); setVel(vel-0.4); }
   });
 </script>
 </body>
