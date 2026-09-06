@@ -209,7 +209,7 @@ Use três pontos... assim... para marcar as pausas curtas.
   elCron.ondblclick = ()=>{ seg=0; pinta(); };
 
   // ---------- rolagem automática ----------
-  let rolando=null, vel=1.0;
+  let rolando=null, vel = parseFloat(localStorage.getItem('tl-vel')) || 1.0;
   const bRolar=$('#bRolar'), linha=$('#linha');
   function pararRolagem(){ if(rolando){ cancelAnimationFrame(rolando); rolando=null; bRolar.textContent='▶ rolar'; bRolar.classList.remove('on'); linha.classList.remove('on'); } }
   function rolar(){
@@ -222,7 +222,7 @@ Use três pontos... assim... para marcar as pausas curtas.
     else { bRolar.textContent='❚❚ rolar'; bRolar.classList.add('on'); linha.classList.add('on'); rolando=requestAnimationFrame(rolar); }
   };
   const elVel=$('#vel');
-  function setVel(v){ vel = Math.min(6, Math.max(0.4, Math.round(v*10)/10)); elVel.textContent = vel.toFixed(1)+'x'; }
+  function setVel(v){ vel = Math.min(6, Math.max(0.4, Math.round(v*10)/10)); elVel.textContent = vel.toFixed(1)+'x'; localStorage.setItem('tl-vel', vel); }
   setVel(vel);
   $('#bRapido').onclick = ()=> setVel(vel+0.4);
   $('#bLento').onclick  = ()=> setVel(vel-0.4);
