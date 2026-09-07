@@ -198,6 +198,16 @@
     }
     .cta-na-caixa p { font-size: .97rem; opacity: .85; margin-bottom: 22px; }
     .cta-na-caixa .btn-wpp-sub { font-size: .8rem; opacity: .6; margin: 12px 0 0; }
+    /* o botao e inline-flex: sem width/margin proprios ele desencosta do centro
+       dentro da caixa, que tem texto justificado em volta */
+    .cta-na-caixa .btn-wpp {
+      display: flex;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto;
+      justify-content: center;
+      text-align: center;
+    }
     .secao-presente .presente-box { max-width: 620px; margin: 0 auto; }
 
     .transformacao p {
