@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Simone Carneiro</title>
+  <script>
+  /* Página de erro que se conserta sozinha.
+     O GitHub Pages serve este arquivo para qualquer endereço que não existe.
+     Antes de mostrar o erro, tenta descobrir para onde a pessoa queria ir:
+     - endereço antigo, de antes de 20/08/2026 (/lp-webinarterapeutas/...)
+     - letra maiúscula ou acento que o celular colocou (/Diagnóstico/)
+     - pontuação ou espaço grudado no fim do link (/diagnostico/. ou %20)
+     - "?" e "&" que algum app transformou em %3F, %26 ou &amp;
+     Se achar uma pasta conhecida, leva para lá mantendo ?faixa= e ?origem=. */
+  (function () {
+    // Pastas publicadas no site. Pasta nova no gh-pages entra aqui também.
+    var PASTAS = ['diagnostico-crescimento', 'diagnostico-financeiro', 'diagnostico',
+                  'plano-21-dias', 'teleprompter', 'obrigado', 'privacidade', 'termos', 'claro'];
+    var ANTIGO = 'lp-webinarterapeutas';
+
+    var caminho = location.pathname, busca = location.search, ancora = location.hash;
+    try { caminho = decodeURIComponent(caminho); } catch (e) {}
+
+    // "?" que virou parte do caminho (%3F) volta a ser busca
+    var q = caminho.indexOf('?');
+    if (q !== -1) {
+      busca = caminho.slice(q) + (busca ? '&' + busca.slice(1) : '');
+      caminho = caminho.slice(0, q);
+    }
+    busca = busca.replace(/&amp;/gi, '&').replace(/\s+/g, '');
+
+    var partes = caminho.toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .split('/')
+      .map(function (p) { return p.trim().replace(/[^a-z0-9._-]/g, '').replace(/[._-]+$/, ''); })
+      .filter(Boolean);
+    if (partes[0] === ANTIGO) partes.shift();
+
+    var destino = null;
+    if (partes.length === 0 || partes[0] === 'index.html') {
+      destino = '/';
+    } else {
+      var seg = partes[0];
+      for (var i = 0; i < PASTAS.length && !destino; i++) {
+        if (seg === PASTAS[i]) destino = '/' + PASTAS[i] + '/';
+      }
+      // "diagnosticos", "diagnostico-crescimentoo": começa com uma pasta conhecida
+      for (var j = 0; j < PASTAS.length && !destino; j++) {
+        if (seg.indexOf(PASTAS[j]) === 0) destino = '/' + PASTAS[j] + '/';
+      }
+    }
+
+    // nunca redireciona para o próprio endereço (evita laço)
+    if (destino && destino !== location.pathname) {
+      location.replace(destino + busca + ancora);
+      document.documentElement.className = 'indo';
+    }
+  })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+  <style>
+    :root { --ouro: #d4af37; --ouro-suave: #e7cd83; --preto: #0b0b0d; --texto: #f2efe9; --cinza: #b5b0a6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: var(--preto); color: var(--texto);
+      font-family: 'Segoe UI', Arial, sans-serif; padding: 32px 20px; text-align: center;
+    }
+    .caixa { max-width: 440px; }
+    h1 { font-family: 'Marcellus', Georgia, serif; font-weight: 400; color: var(--ouro-suave); font-size: 1.7rem; margin-bottom: 14px; }
+    p { color: var(--cinza); line-height: 1.6; margin-bottom: 28px; }
+    .btn {
+      display: block; padding: 15px 22px; margin-bottom: 12px; border-radius: 10px;
+      background: var(--ouro); color: var(--preto); font-weight: 600; text-decoration: none;
+    }
+    .btn.sec { background: transparent; color: var(--ouro-suave); border: 1px solid rgba(212,175,55,.35); }
+    .indo .caixa { visibility: hidden; }
+  </style>
+</head>
+<body>
+  <div class="caixa">
+    <h1>Esta página não foi encontrada</h1>
+    <p>O link pode ter sido digitado ou copiado com algum erro. Escolha abaixo para onde você quer ir.</p>
+    <a class="btn" href="/diagnostico/?faixa=1">Fazer o diagnóstico</a>
+    <a class="btn sec" href="/">Ir para a página inicial</a>
+  </div>
+</body>
+</html>
